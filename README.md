@@ -10,7 +10,7 @@ A personal, interactive **Spotify Wrapped** — rebuilt as a Tableau dashboard f
 
 ## Preview
 
-![Dashboard preview](assets/dashboard-preview.png)
+![Dashboard preview](assets/dashboard-preview)
 
 In this snapshot (2025 vs. 2024), the dashboard shows 2,096 total streams (▲1896.2% year over year) and 102 hours listened (▲3110.0%) — with Sidhu Moose Wala, Shubh, NF, Pritam, and JONY as the top 5 artists.
 
