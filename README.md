@@ -60,15 +60,12 @@ The fields the dashboard actually uses:
 
 | Field | Description |
 |---|---|
-| `ts` | UTC timestamp marking when the track stopped playing |
+| `ts` | UTC timestamp for when the track stopped playing, ordered year-month-day followed by a 24-hour time |
 | `platform` | Device/OS the track was streamed on |
-| `ms_played` | How long the track played, in milliseconds |
+| `ms_played` | Length of the stream, in milliseconds |
 | `master_metadata_track_name` | Track name |
 | `master_metadata_album_artist_name` | Artist name |
-| `master_metadata_album_album_name` | Album name |
-| `shuffle` | Whether shuffle mode was on |
-
-Spotify's export includes several more fields (`conn_country`, `ip_addr_decrypted`, `reason_start`/`reason_end`, `skipped`, `offline`, `incognito_mode`, podcast episode fields, etc.) that aren't used in this version of the dashboard — see [Possible Enhancements](#possible-enhancements).
+| `shuffle` | `True` or `False`, depending on whether shuffle mode was on during playback |
 
 ## Data Preparation
 
