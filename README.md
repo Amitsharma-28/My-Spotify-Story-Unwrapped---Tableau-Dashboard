@@ -45,7 +45,7 @@ The whole dashboard is driven by a single **Select Year** parameter. Nothing is 
 | **Year on Year** | Total minutes listened for every year in the data (2018–2026) |
 | **Listening by Time of Day** | Morning / Afternoon / Evening / Night split |
 | **Shuffle vs. Intentional Listening** | How much listening is shuffled vs. deliberately chosen |
-| **Listening by Platform** | iPhone / Android / Windows / Mac / Web / Other |
+| **Listening by Platform** | iPhone / Android / Windows / Other |
 
 ## Data Source
 
