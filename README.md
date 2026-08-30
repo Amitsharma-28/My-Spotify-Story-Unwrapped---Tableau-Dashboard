@@ -117,8 +117,8 @@ Rather than building a separate text object, the title text itself contains inse
 
 ```
 Hours Listened
-SUM({SUM([Current Year Hours])})
-{[Arrow - Hours]}  SUM({[% Change - Hours]}) vs. PY
+<SUM({SUM([Current Year Hours])})>
+<{[Arrow - Hours]}><SUM({[% Change - Hours]})> vs. PY
 ```
 
 The curly-brace aggregation totals `Current Year Hours` across the *entire* view (all 12 months), not just whichever month the mouse happens to be over — so the number shown is the full-year total. `Arrow - Hours` and `% Change - Hours` are two more calculated fields feeding the same title:
