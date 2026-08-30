@@ -110,7 +110,7 @@ IF YEAR([Timestamp IST]) = [Select Year] - 1 THEN 1 ELSE 0 END
 Because both fields exist for every row regardless of year, both can sit on the same **Month Number** axis and be summed independently — which is what makes the side-by-side comparison possible in the first place.
 
 **2. Overlay both years as a dual-axis line chart.**
-`SUM(Current Year Hours)` and `SUM(Previous Year Hours)` both go on **Rows**, combined into a **dual axis** and synchronized so they share one scale. Each line is formatted separately — current year as a bold dark line, previous year as a thin gray line — which is what produces the little sparkline under each KPI number: one bold line tracing this year's shape, with a flat gray line for last year underneath it.
+`SUM(Current Year Hours)` and `SUM(Previous Year Hours)` both go on **Rows**, combined into a **dual axis** and synchronized so they share one scale. Each line is formatted separately — both bold, current year in black and previous year in gray — which is what produces the sparkline under each KPI number: two bold lines tracing the same 12 months side by side, this year against last.
 
 **3. Turn the same sheet's title into the "big number."**
 Rather than building a separate text object, the title text itself contains inserted calculated fields:
