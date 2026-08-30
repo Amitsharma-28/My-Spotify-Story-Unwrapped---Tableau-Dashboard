@@ -49,7 +49,14 @@ The whole dashboard is driven by a single **Select Year** parameter. Nothing is 
 
 ## Data Source
 
-The dashboard runs on Spotify's **Extended Streaming History** export, which you can request yourself from *Spotify → Account → Privacy Settings → Request data*. It arrives by email as a set of JSON files, one row per playback event. The fields the dashboard actually uses:
+The dashboard runs on Spotify's **Extended Streaming History** export, which you can request yourself from *Spotify → Account → Privacy Settings → Request data*. It arrives by email as a set of JSON files, one row per playback event — Spotify splits a long history into sequentially numbered chunks. In this project, that's two files:
+ 
+| File | Coverage |
+|---|---|
+| `Streaming_History_Audio_2018-2022_0.json` | Dec 7, 2018 – Jan 15, 2022 |
+| `Streaming_History_Audio_2022-2026_1.json` | Jan 15, 2022 – Mar 18, 2026 |
+
+The fields the dashboard actually uses:
 
 | Field | Description |
 |---|---|
