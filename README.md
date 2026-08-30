@@ -80,30 +80,33 @@ Spotify logs `ts` in UTC. Since I'm in India, I shift every timestamp forward by
 
 ## How It Works
 
-This section walks through the techniques behind the trickier visuals.
+This section walks through the techniques behind the trickier visuals. One term comes up right away: **`Select Year`** is the integer parameter behind the Year dropdown at the top of the dashboard (allowable values: a list, 2018–2026). Every formula below that references `[Select Year]` is reading whatever year is currently selected there — full details on how it's wired into filters and dashboard actions are in [Parameters and Dashboard Actions](#parameters-and-dashboard-actions).
 
 ### The year-over-year KPI cards (dual-axis line charts)
-
+ 
 The **Total Streams** and **Hours Listened** tiles each pack three things into a single worksheet: a big current-year number, a ▲/▼ percentage vs. last year, and a 12-month trend sparkline — all in one sheet, no separate "big number" object.
-
+ 
 **1. Split the measure by year, not by filtering rows.**
 Instead of filtering the data to one year (which would make year-over-year comparison impossible), two calculated fields flag every row with its value *only if* it belongs to the relevant year, and 0 otherwise:
-
+ 
 ```
 Current Year Hours
 IF YEAR([Timestamp IST]) = [Select Year] THEN [Hours Played] ELSE 0 END
-
+ 
 Previous Year Hours
 IF YEAR([Timestamp IST]) = [Select Year] - 1 THEN [Hours Played] ELSE 0 END
 ```
-
+ 
 The same pattern is used for stream counts, just flagging `1` instead of `[Hours Played]` — so a plain `SUM()` doubles as a `COUNT()`:
-
+ 
 ```
 Current Year Streams
 IF YEAR([Timestamp IST]) = [Select Year] THEN 1 ELSE 0 END
+ 
+Previous Year Streams
+IF YEAR([Timestamp IST]) = [Select Year] - 1 THEN 1 ELSE 0 END
 ```
-
+ 
 Because both fields exist for every row regardless of year, both can sit on the same **Month Number** axis and be summed independently — which is what makes the side-by-side comparison possible in the first place.
 
 **2. Overlay both years as a dual-axis line chart.**
