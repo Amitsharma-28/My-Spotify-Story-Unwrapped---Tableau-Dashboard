@@ -146,7 +146,7 @@ Top 5 artist Filter
 INDEX()
 ```
 
-With Artist sorted descending by `SUM(Minutes Played)` and the calculation set to compute **along Table (across)**, `INDEX()` returns each artist's rank — 1 for the most-played, 2 for the next, and so on. Dropping this field onto the Filters shelf and restricting it to a **range of 1 to 5** keeps only the top 5 ranked bars, out of however many distinct artists exist for that year (384, in this snapshot). Because the ranking is a table calculation rather than a hardcoded value, it recalculates automatically every time the year parameter changes.
+With Artist sorted descending by `SUM(Minutes Played)` and the calculation set to compute **along Table (across)**, `INDEX()` returns each artist's rank — 1 for the most-played, 2 for the next, and so on. Dropping this field onto the Filters shelf and restricting it to a **range of 1 to 5** keeps only the top 5 ranked bars, out of however many distinct artists exist for that year. Because the ranking is a table calculation rather than a hardcoded value, it recalculates automatically every time the year parameter changes.
 
 ### Cleaning up platform data
 
