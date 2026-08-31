@@ -131,6 +131,8 @@ Arrow - Hours
 IF SUM([Current Year Hours]) > SUM([Previous Year Hours]) THEN "▲" ELSE "▼" END
 ```
  
+The same fields power the tooltip too, just at monthly grain instead of full-year. Hovering any point on the sparkline breaks the total back down to that specific month: hours that month this year, hours that same month last year, and the % change between them, all pulled from the identical `Current Year Hours` / `Previous Year Hours` / `% Change - Hours` fields, just evaluated per-month rather than totaled across the whole view.
+ 
 A small companion sheet, **KPI Legend**, renders the "2025 vs 2024" caption above the cards — built from two more passthrough fields, `Current Year` (`[Select Year]`) and `Previous Year` (`[Select Year]-1`), so it always names the correct pair of years.
  
 The **Total Streams** card follows the exact same pattern, swapping Hours for Streams throughout.
@@ -179,7 +181,7 @@ With Artist sorted descending by `SUM(Minutes Played)` and the calculation set t
  
 ### Labeling Shuffle vs. Intentional
  
-The raw `shuffle` field is just a boolean — `True` on 15,943 rows and `False` on 13,198 in this dataset, nothing more descriptive than that. Rather than a calculated field, the **Shuffle vs. Intentional Listening** chart relabels those two values directly via Tableau's field aliases (`False` → "Intentional," `True` → "Shuffle") so the bar chart reads naturally without needing a lookup formula.
+The raw `shuffle` field is just a boolean — `True` or `False`, nothing more descriptive than that. Rather than a calculated field, the **Shuffle vs. Intentional Listening** chart relabels those two values directly via Tableau's field aliases (`False` → "Intentional," `True` → "Shuffle") so the bar chart reads naturally without needing a lookup formula.
 
 ## Parameters and Dashboard Actions
 
