@@ -22,8 +22,6 @@ A personal, interactive **Spotify Wrapped** — rebuilt as a Tableau dashboard f
 - [Parameters and Dashboard Actions](#parameters-and-dashboard-actions)
 - [Calculated Fields Reference](#calculated-fields-reference)
 - [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Possible Enhancements](#possible-enhancements)
 - [Repository Structure](#repository-structure)
 - [Data Privacy Note](#data-privacy-note)
 
