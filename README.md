@@ -79,9 +79,9 @@ DATEADD('minute', 330, [Timestamp])
 Spotify logs `ts` in UTC. Since I'm in India, I shift every timestamp forward by 5 hours 30 minutes so that "Year," "Hour of Day," "Day of Week," and everything else downstream reflects when I actually pressed play — not the UTC log time.
 
 ## How It Works
-
+ 
 This section walks through the techniques behind the trickier visuals. One term comes up right away: **`Select Year`** is the integer parameter behind the Year dropdown at the top of the dashboard (allowable values: a list, 2018–2026). Every formula below that references `[Select Year]` is reading whatever year is currently selected there — full details on how it's wired into filters and dashboard actions are in [Parameters and Dashboard Actions](#parameters-and-dashboard-actions).
-
+ 
 ### The year-over-year KPI cards (dual-axis line charts)
  
 The **Total Streams** and **Hours Listened** tiles each pack three things into a single worksheet: a big current-year number, a ▲/▼ percentage vs. last year, and a 12-month trend sparkline — all in one sheet, no separate "big number" object.
@@ -108,50 +108,37 @@ IF YEAR([Timestamp IST]) = [Select Year] - 1 THEN 1 ELSE 0 END
 ```
  
 Because both fields exist for every row regardless of year, both can sit on the same **Month Number** axis and be summed independently — which is what makes the side-by-side comparison possible in the first place.
-
+ 
 **2. Overlay both years as a dual-axis line chart.**
 `SUM(Current Year Hours)` and `SUM(Previous Year Hours)` both go on **Rows**, combined into a **dual axis** and synchronized so they share one scale. Each line is formatted separately — both bold, current year in black and previous year in gray — which is what produces the sparkline under each KPI number: two bold lines tracing the same 12 months side by side, this year against last.
-
+ 
 **3. Turn the same sheet's title into the "big number."**
 Rather than building a separate text object, the title text itself contains inserted calculated fields:
-
+ 
 ```
 Hours Listened
-<SUM({SUM([Current Year Hours])})>
-<{[Arrow - Hours]}><SUM({[% Change - Hours]})> vs. PY
+SUM({SUM([Current Year Hours])})
+{[Arrow - Hours]}  SUM({[% Change - Hours]}) vs. PY
 ```
-
+ 
 The curly-brace aggregation totals `Current Year Hours` across the *entire* view (all 12 months), not just whichever month the mouse happens to be over — so the number shown is the full-year total. `Arrow - Hours` and `% Change - Hours` are two more calculated fields feeding the same title:
-
+ 
 ```
 % Change - Hours
 (SUM([Current Year Hours]) - SUM([Previous Year Hours])) / SUM([Previous Year Hours])
-
+ 
 Arrow - Hours
 IF SUM([Current Year Hours]) > SUM([Previous Year Hours]) THEN "▲" ELSE "▼" END
 ```
-
+ 
 A small companion sheet, **KPI Legend**, renders the "2025 vs 2024" caption above the cards — built from two more passthrough fields, `Current Year` (`[Select Year]`) and `Previous Year` (`[Select Year]-1`), so it always names the correct pair of years.
-
+ 
 The **Total Streams** card follows the exact same pattern, swapping Hours for Streams throughout.
-
-### Ranking the Top 5 Artists with INDEX()
-
-The Top 5 Artists bar chart needs to show *only* the top 5 — but "top 5" depends on which year is selected, so it can't be a static filter on artist name.
-
-The fix is Tableau's `INDEX()` table calculation:
-
-```
-Top 5 artist Filter
-INDEX()
-```
-
-With Artist sorted descending by `SUM(Minutes Played)` and the calculation set to compute **along Table (across)**, `INDEX()` returns each artist's rank — 1 for the most-played, 2 for the next, and so on. Dropping this field onto the Filters shelf and restricting it to a **range of 1 to 5** keeps only the top 5 ranked bars, out of however many distinct artists exist for that year. Because the ranking is a table calculation rather than a hardcoded value, it recalculates automatically every time the year parameter changes.
-
+ 
 ### Cleaning up platform data
-
-Spotify logs the `platform` field inconsistently — the same iPhone might show up as `ios`, `iOS 17.2`, or `iphone` depending on the app version. `Platform Clean` normalizes this with nested string matching:
-
+ 
+Spotify logs the `platform` field inconsistently — in this export, the same iPhone shows up as `ios` in some rows and as version-specific strings like `iOS 15.5 (iPhone12,8)` in others, while Android and Windows devices log full build strings such as `Android OS 7.1.2 API 25 (Xiaomi, Redmi 4)` or `Windows 10 (10.0.19042; x64; AppX)`. `Platform Clean` normalizes all of it with nested string matching:
+ 
 ```
 Platform Clean
 IF CONTAINS(LOWER([Platform]), "ios") OR CONTAINS(LOWER([Platform]), "iphone") THEN "iPhone"
@@ -163,11 +150,11 @@ ELSE "Other"
 END
 ```
 `LOWER()` makes the match case-insensitive; `CONTAINS()` catches any variant that mentions the platform name anywhere in the raw string, rather than needing an exact match.
-
+ 
 ### Bucketing time of day
-
+ 
 `Time of Day` turns the raw hour into four labeled, human-readable buckets used by the donut chart and available as a cross-filter dimension elsewhere:
-
+ 
 ```
 Time of Day
 IF DATEPART('hour', [Timestamp IST]) >= 5 AND DATEPART('hour', [Timestamp IST]) < 12 THEN "Morning"
@@ -176,6 +163,23 @@ ELSEIF DATEPART('hour', [Timestamp IST]) >= 17 AND DATEPART('hour', [Timestamp I
 ELSE "Night"
 END
 ```
+
+### Ranking the Top 5 Artists with INDEX()
+ 
+The Top 5 Artists bar chart needs to show *only* the top 5 — but "top 5" depends on which year is selected, so it can't be a static filter on artist name.
+ 
+The fix is Tableau's `INDEX()` table calculation:
+ 
+```
+Top 5 artist Filter
+INDEX()
+```
+ 
+With Artist sorted descending by `SUM(Minutes Played)` and the calculation set to compute **along Table (across)**, `INDEX()` returns each artist's rank — 1 for the most-played, 2 for the next, and so on. Dropping this field onto the Filters shelf and restricting it to a **range of 1 to 5** keeps only the top 5 ranked bars, out of however many distinct artists exist for that year (384, in this snapshot). Because the ranking is a table calculation rather than a hardcoded value, it recalculates automatically every time the year parameter changes.
+ 
+### Labeling Shuffle vs. Intentional
+ 
+The raw `shuffle` field is just a boolean — `True` on 15,943 rows and `False` on 13,198 in this dataset, nothing more descriptive than that. Rather than a calculated field, the **Shuffle vs. Intentional Listening** chart relabels those two values directly via Tableau's field aliases (`False` → "Intentional," `True` → "Shuffle") so the bar chart reads naturally without needing a lookup formula.
 
 ## Parameters and Dashboard Actions
 
