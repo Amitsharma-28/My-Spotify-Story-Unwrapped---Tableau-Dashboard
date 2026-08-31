@@ -214,7 +214,7 @@ DATEADD('minute', 330, [Timestamp])
 YEAR([Timestamp IST])
 ```
  
-**Year-month**
+**Year-month (YYYY-MM)**
 ```
 STR(YEAR([Timestamp IST])) + "-" + RIGHT("0" + STR(MONTH([Timestamp IST])), 2)
 ```
