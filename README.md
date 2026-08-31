@@ -193,47 +193,46 @@ The **Top 5 Artists** sheet also carries the `Top Filter`, restricting the `INDE
 **Cross-filtering:** clicking a mark in one chart (an artist, a platform, an hour/day cell, a time-of-day slice, a shuffle bar) filters the rest of the dashboard through a set of dashboard filter actions. Each action is deliberately **excluded from its own source sheet** — so clicking an artist in the Top 5 Artists chart filters everything *else*, without that chart also filtering (and hiding) its own bars.
 
 ## Calculated Fields Reference
-
+ 
 Full list of every calculated field in the workbook, grouped by purpose.
-
-<details>
-<summary><strong>Date & time</strong></summary>
-
+ 
+### Date & time
+ 
 **Timestamp IST**
 ```
 DATEADD('minute', 330, [Timestamp])
 ```
-
+ 
 **Year**
 ```
 YEAR([Timestamp IST])
 ```
-
+ 
 **Year-month**
 ```
 STR(YEAR([Timestamp IST])) + "-" + RIGHT("0" + STR(MONTH([Timestamp IST])), 2)
 ```
-
+ 
 **Month Name**
 ```
 DATENAME('month', [Timestamp IST])
 ```
-
+ 
 **Month Number**
 ```
 MONTH([Timestamp IST])
 ```
-
+ 
 **Day of Week**
 ```
 DATENAME('weekday', [Timestamp IST])
 ```
-
+ 
 **Hour of Day**
 ```
 DATEPART('hour', [Timestamp IST])
 ```
-
+ 
 **Time of Day**
 ```
 IF DATEPART('hour', [Timestamp IST]) >= 5 AND DATEPART('hour', [Timestamp IST]) < 12 THEN "Morning"
@@ -242,25 +241,21 @@ ELSEIF DATEPART('hour', [Timestamp IST]) >= 17 AND DATEPART('hour', [Timestamp I
 ELSE "Night"
 END
 ```
-</details>
-
-<details>
-<summary><strong>Core metrics</strong></summary>
-
+ 
+### Core metrics
+ 
 **Hours Played**
 ```
 [Ms Played] / 3600000
 ```
-
+ 
 **Minutes Played**
 ```
 [Ms Played] / 60000
 ```
-</details>
-
-<details>
-<summary><strong>Platform cleaning</strong></summary>
-
+ 
+### Platform cleaning
+ 
 **Platform Clean**
 ```
 IF CONTAINS(LOWER([Platform]), "ios") OR CONTAINS(LOWER([Platform]), "iphone") THEN "iPhone"
@@ -271,96 +266,72 @@ ELSEIF CONTAINS(LOWER([Platform]), "web") THEN "Web"
 ELSE "Other"
 END
 ```
-</details>
-
-<details>
-<summary><strong>Year-over-year comparison engine</strong></summary>
-
+ 
+### Year-over-year comparison engine
+ 
 **Current Year**
 ```
 [Select Year]
 ```
-
+ 
 **Previous Year**
 ```
 [Select Year]-1
 ```
-
+ 
 **Current Year Hours**
 ```
 IF YEAR([Timestamp IST]) = [Select Year] THEN [Hours Played] ELSE 0 END
 ```
-
+ 
 **Previous Year Hours**
 ```
 IF YEAR([Timestamp IST]) = [Select Year] - 1 THEN [Hours Played] ELSE 0 END
 ```
-
+ 
 **Current Year Streams**
 ```
 IF YEAR([Timestamp IST]) = [Select Year] THEN 1 ELSE 0 END
 ```
-
+ 
 **Previous Year Streams**
 ```
 IF YEAR([Timestamp IST]) = [Select Year] - 1 THEN 1 ELSE 0 END
 ```
-
+ 
 **% Change - Hours**
 ```
 (SUM([Current Year Hours]) - SUM([Previous Year Hours])) / SUM([Previous Year Hours])
 ```
-
+ 
 **% Change — Streams**
 ```
 (SUM([Current Year Streams]) - SUM([Previous Year Streams])) / SUM([Previous Year Streams])
 ```
-
+ 
 **Arrow - Hours**
 ```
 IF SUM([Current Year Hours]) > SUM([Previous Year Hours]) THEN "▲" ELSE "▼" END
 ```
-
+ 
 **Arrow - Streams**
 ```
 IF SUM([Current Year Streams]) > SUM([Previous Year Streams]) THEN "▲" ELSE "▼" END
 ```
-</details>
-
-<details>
-<summary><strong>Ranking</strong></summary>
-
+ 
+### Ranking
+ 
 **Top 5 artist Filter**
 ```
 INDEX()
 ```
 *Compute using: Table (across)*
-</details>
 
 ## Tech Stack
 
 - **Tableau Desktop** (Tableau Public–compatible) for all modeling, calculations, and dashboard design
 - **Spotify Extended Streaming History** (JSON) as the sole data source
 - Tableau features used throughout: calculated fields, table calculations (`INDEX()`, table-scoped `SUM({...})` aggregation), an integer **parameter**, **dual-axis** combination charts, **dashboard filter actions**, and formula-driven titles/tooltips
-
-## Getting Started
-
-1. **Request your own data** — Spotify → Account → Privacy Settings → *Request data* → check "Extended streaming history." It arrives by email as a ZIP of JSON files (can take a little while).
-2. **Load it into Tableau** — connect directly to the `Streaming_History_Audio_*.json` files, or union/convert them into a single CSV first.
-3. **Open the workbook** in Tableau Desktop or Tableau Public and repoint the data source to your export.
-4. **Update the `Select Year` parameter's** list of allowable values to match the years present in your own history.
-5. Everything else — KPIs, the Top 5 ranking, every chart — recalculates automatically, since none of it is hardcoded.
-
-## Possible Enhancements
-
-The Spotify export includes several fields the current dashboard doesn't use yet:
-
-- **Podcast analytics** from `episode_name` / `episode_show_name`
-- **Skip-rate analysis** from `skipped`
-- **Offline vs. online listening** from `offline`
-- **Private-session share** from `incognito_mode`
-- **Geographic breakdown** from `conn_country`, useful if you listen while traveling
-- **Session-start/end reasons** (`reason_start` / `reason_end`) as a funnel
 
 ## Repository Structure
 
@@ -375,4 +346,4 @@ The Spotify export includes several fields the current dashboard doesn't use yet
 
 ## Data Privacy Note
 
-Spotify's extended streaming history contains personal data — precise timestamps, IP addresses, listening habits. The raw export is intentionally **not included** in this repository; only the dashboard's logic (calculated fields, parameters, structure) is documented here. To explore it yourself, connect the workbook to your own exported data as described in [Getting Started](#getting-started).
+Spotify's extended streaming history contains personal data — IP addresses, precise timestamps, listening habits. The raw export is intentionally **not included** in this repository; only the dashboard's logic (calculated fields, parameters, structure) is documented here.
