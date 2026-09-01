@@ -110,6 +110,8 @@ Because both fields exist for every row regardless of year, both can sit on the 
 **2. Overlay both years as a dual-axis line chart.**
 `SUM(Current Year Hours)` and `SUM(Previous Year Hours)` both go on **Rows**, combined into a **dual axis** and synchronized so they share one scale. Each line is formatted separately — both bold, current year in black and previous year in gray — which is what produces the sparkline under each KPI number: two bold lines tracing the same 12 months side by side, this year against last.
  
+![Total Streams and Hours Listened KPI cards, showing the big current-year number, the percent-change indicator, and the black-vs-gray dual-axis sparkline](assets/kpi-cards-detail.png)
+ 
 **3. Turn the same sheet's title into the "big number."**
 Rather than building a separate text object, the title text itself contains inserted calculated fields:
  
