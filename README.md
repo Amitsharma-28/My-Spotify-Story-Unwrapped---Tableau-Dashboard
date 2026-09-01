@@ -22,7 +22,6 @@ A personal, interactive **Spotify Wrapped** — rebuilt as a Tableau dashboard f
 - [Parameters and Dashboard Actions](#parameters-and-dashboard-actions)
 - [Calculated Fields Reference](#calculated-fields-reference)
 - [Tech Stack](#tech-stack)
-- [Repository Structure](#repository-structure)
 - [Data Privacy Note](#data-privacy-note)
 
 ## Overview
@@ -32,18 +31,18 @@ Spotify's own "Wrapped" only looks back once a year, at whatever slice of data S
 The whole dashboard is driven by a single **Select Year** parameter. Nothing is hardcoded — change the parameter and every number, chart, and ranking on the page updates.
 
 ## Dashboard Features
-
+ 
 | Tile | What it shows |
 |---|---|
 | **Total Streams** | Current-year stream count, % change vs. the previous year, and a mini trend sparkline |
-| **Hours Listened** | Same idea, in hours |
+| **Hours Listened** | Current-year total hours, % change vs. the previous year, and a mini trend sparkline |
 | **Top 5 Artists** | The 5 most-played artists for the selected year, ranked by minutes played |
 | **Listening Trend** | Month-by-month minutes listened across the selected year |
-| **Listening Activity by Hour & Day** | A Sun–Sat × 0–23h heatmap of when I listen most |
+| **Listening Activity by Hour & Day** | Minutes listened, mapped as a Sun–Sat × 0–23h heatmap of when I listen most |
 | **Year on Year** | Total minutes listened for every year in the data (2018–2026) |
-| **Listening by Time of Day** | Morning / Afternoon / Evening / Night split |
-| **Shuffle vs. Intentional Listening** | How much listening is shuffled vs. deliberately chosen |
-| **Listening by Platform** | iPhone / Android / Windows / Other |
+| **Listening by Time of Day** | Minutes listened, split by Morning / Afternoon / Evening / Night |
+| **Shuffle vs. Intentional Listening** | Minutes listened, shuffled vs. deliberately chosen |
+| **Listening by Platform** | Minutes listened, split by iPhone / Android / Windows / Other |
 
 ## Data Source
 
@@ -121,7 +120,7 @@ SUM({SUM([Current Year Hours])})
 {[Arrow - Hours]}  SUM({[% Change - Hours]}) vs. PY
 ```
  
-The curly-brace aggregation totals `Current Year Hours` across the *entire* view (all 12 months), not just whichever month the mouse happens to be over — so the number shown is the full-year total. `Arrow - Hours` and `% Change - Hours` are two more calculated fields feeding the same title:
+The curly-brace aggregation totals Current Year Hours across the entire view (all 12 months) rather than letting it compute separately for each month on the line. A title needs one static value, and without the braces there isn't one to give — the calculation produces 12 different monthly numbers instead, so Tableau falls back to showing the range across all of them, rather than the intended full-year figure. `Arrow - Hours` and `% Change - Hours` are two more calculated fields feeding the same title:
  
 ```
 % Change - Hours
@@ -331,25 +330,14 @@ IF SUM([Current Year Streams]) > SUM([Previous Year Streams]) THEN "▲" ELSE "�
 ```
 INDEX()
 ```
-*Compute using: Table (across)*
+*Computed along Table (across)*
 
 ## Tech Stack
-
+ 
 - **Tableau Desktop** (Tableau Public–compatible) for all modeling, calculations, and dashboard design
 - **Spotify Extended Streaming History** (JSON) as the sole data source
-- Tableau features used throughout: calculated fields, table calculations (`INDEX()`, table-scoped `SUM({...})` aggregation), an integer **parameter**, **dual-axis** combination charts, **dashboard filter actions**, and formula-driven titles/tooltips
-
-## Repository Structure
-
-```
-├── README.md
-├── assets/
-│   └── dashboard-preview.png
-└── My Spotify Story Unwrapped.twbx
-```
-
-*(adjust to match your actual repo — rename the `.twbx` to whatever you've saved your workbook as)*
+- Tableau features used throughout: calculated fields, table calculations (`INDEX()`, table-scoped `SUM({...})` aggregation), an integer **parameter**, **dual-axis** charts, **dashboard filter actions**, field aliases, and formula-driven titles/tooltips
 
 ## Data Privacy Note
-
-Spotify's extended streaming history contains personal data — IP addresses, precise timestamps, listening habits. The raw export is intentionally **not included** in this repository; only the dashboard's logic (calculated fields, parameters, structure) is documented here.
+ 
+Spotify's extended streaming history contains personal data, including IP addresses. Neither the raw export nor the packaged Tableau workbook is included in this repository, since a `.twbx` export would embed that same underlying data. Only the dashboard's logic — calculated fields, parameters, structure — is documented here.
