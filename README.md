@@ -41,7 +41,7 @@ The whole dashboard is driven by a single **Select Year** parameter. Nothing is 
 | **Listening Activity by Hour & Day** | Minutes listened, mapped as a Sun–Sat × 0–23h heatmap of when I listen most |
 | **Year on Year** | Total minutes listened for every year in the data (2018–2026) |
 | **Listening by Time of Day** | Minutes listened, split by Morning / Afternoon / Evening / Night |
-| **Shuffle vs. Intentional Listening** | Minutes listened, shuffled vs. deliberately chosen |
+| **Shuffle vs. Intentional Listening** | Minutes listened, shuffled vs. deliberately chosen, against an average reference line |
 | **Listening by Platform** | Minutes listened, split by iPhone / Android / Windows / Other |
 
 ## Data Source
