@@ -109,7 +109,7 @@ Because both fields exist for every row regardless of year, both can sit on the 
 **2. Overlay both years as a dual-axis line chart.**
 `SUM(Current Year Hours)` and `SUM(Previous Year Hours)` both go on **Rows**, combined into a **dual axis** and synchronized so they share one scale. Each line is formatted separately — both bold, current year in black and previous year in gray — which is what produces the sparkline under each KPI number: two bold lines tracing the same 12 months side by side, this year against last.
  
-![Total Streams and Hours Listened KPI cards, showing the big current-year number, the percent-change indicator, and the black-vs-gray dual-axis sparkline](assets/kpi-cards-detail.png)
+![Total Hours Listened KPI card, showing the big current-year number, the percent-change indicator, and the black-vs-gray dual-axis sparkline](assets/hours-listened-1.png)
  
 **3. Turn the same sheet's title into the "big number."**
 Rather than building a separate text object, the title text itself contains inserted calculated fields:
@@ -135,6 +135,9 @@ The same fields power the tooltip too, just at monthly grain instead of full-yea
 A small companion sheet, **KPI Legend**, renders the "2025 vs 2024" caption above the cards — built from two more passthrough fields, `Current Year` (`[Select Year]`) and `Previous Year` (`[Select Year]-1`), so it always names the correct pair of years.
  
 The **Total Streams** card follows the exact same pattern, swapping Hours for Streams throughout.
+
+![Total Streams KPI card, showing the big current-year number, the percent-change indicator, and the black-vs-gray dual-axis sparkline](assets/total-streams-1.png)
+
  
 ### Cleaning up platform data
  
